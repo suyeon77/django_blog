@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+<!-- base.html을 불러올꺼예요 (우선도가 높다.)-->
+
+<!-- 컨텐츠라고 표시해주는 테그를 쓰고 닫아준다 -->
+{% block contents %}
+      <div class="container mt-5">
+            {% for blog in posts %}
+            <!-- blog에서 원하는 만큼의 post를 가져온다 -->
+            <div class="card">
+                    <div class="card-body">
+                      <h3 class="card-title">{{blog.title}}</h3>
+                      <h6 class="card-subtitle mb-2 text-muted">{{blog.pub_date}}</h6>
+                      <p class="card-text">{{blog.summary}} </p>
+                      <a href="{% url 'detail' blog.id %}" class="card-link">...more</a>
+                      <br>
+                      <a href="{% url 'delete' blog.id %}">삭제</a>  
+                  </div>
+                  </div>
+            {% endfor %}
+      </div>
+
+      <div class="container">
+      <!-- 첫번째 페이지 -->
+      {% if posts.has_previous %}
+      <!-- post가 이전 페이지가 있다면 Previous를 실행해라 -->
+      <a href="?page=1">First</a> 
+      <a href="?page={{posts.previous_page_number}}">Previous</a> 
+      {% endif %}
+      <!-- 이전페이지가 있을떄 실행되는 코드들 -->
+      <!-- 3~4페이지 -->
+      <span>{{posts.number}}</span> 
+      <span>of</span> 
+      <span>{{posts.paginator.num_pages}}</span> 
+      <!-- 다음 페이지 -->
+      {% if posts.has_next %} 
+      <a href="?page={{posts.next_page_number}}">Next</a> 
+      <!-- 다음 페이지가 있을때만 실행 -->
+      <a href="?page={{posts.paginator.num_pages}}">Last</a> 
+      <!-- 전체 페이지수를 말해준다 -->
+      {% endif %}
+      </div>
+      
+{% endblock %}
